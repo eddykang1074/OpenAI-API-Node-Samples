@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>ChatGPT AI Chatbot</title>
+</head>
+
+<body>
+    <h1>ChatGPT AI Chatbot과 대화하기</h1>
+
+    대화명:<input type="text" id="nickName" value="에디" /><br/>
+    메시지:<input type="text" id="message" placeholder="프롬프트 메시지를 입력해주세요" style="width:500px;"/><br/>
+    <button id="btnSend">전송</button> 
+
+    <hr>
+    대화이력보기
+    <ul id="chatHistory">
+
+    </ul>
+
+    <!-- jquery cdn 라이브러리 참조  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+    <!-- socket.io javascript library 참조  -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- 개발자정의 소켓 통신 기능 구현 -->
+    <script>
+
+        //STEP1:socket.io.js에서 제공하는 io객체를 이용해 서버소켓(socket.js)와 연결한다.
+        //io.connect('서버소켓연결경로주소:http://localhost:3000/')
+        //io.connect()메소드를 통해 현재 웹브라우저 웹페이지와 서버소켓과 연결을 시도합니다. 
+        var socket = io.connect('/');
+
+
+        //전송버튼이 클릭되면 메시지를 서버소켓으로 전송한다.
+        $("#btnSend").click(function(){
+            sendMessage();
+        });
+
+
+        // Enter key press event handler
+        $("#message").keypress(function(event) {
+            if (event.keyCode === 13) {
+                sendMessage();
+            }
+        });
+
+
+        //메시지 발송 함수 
+        function sendMessage(){
+            //step1:닉네임값을 추출합니다.
+            var nickName = $("#nickName").val();
+
+            //step2:사용자 입력 메시지값을 추출합니다.
+            var message = $("#message").val();
+
+            socket.emit('gptChat',nickName,message);
+        }
+
+
+
+        //서버소켓(socket.js)에서 보내주는 GPT 메시지 이벤트 수신기들 기능 정의
+        socket.on('receiveGptMsg',function(msgData){
+            console.log("서버소켓에서 보내준 GPT 메시지 출력:",msgData);
+
+            //waiticon삭제하기 
+            $("#waiticon").remove();
+
+            //도착한 메시지 문자열을 ul태그에 li태그형식으로 추가해줍니다.
+            $("#chatHistory").append(`<li>${msgData}</li>`);
+
+            //프롬프트 텍스트박스 초기화 
+            $("#message").val("");
+            $("#message").focus();
+        });
+
+    </script>
+
+</body>
+
+</html>

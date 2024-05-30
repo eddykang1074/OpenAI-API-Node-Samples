@@ -1,0 +1,69 @@
+<html>
+  <head>
+    <title>DALL.E3 API 호출 샘플</title>
+    <style>
+      select {
+        width: 270px;
+        height: 50px;
+        font-size: 20pt;
+        margin-bottom: 10px;
+      }
+
+      input[type="text"] {
+        width: 400px;
+        height: 50px;
+        font-size: 20pt;
+        margin-bottom: 10px;
+      }
+
+      button {
+        width: 180px;
+        height: 48px;
+        font-size: 20pt;
+        vertical-align: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>DALL.E3 API 호출 샘플-2024.04.15 기준</h1>
+
+    <form action="/dalle3" method="post">
+      <select name="version">
+        <option value="">DALL.E 버전 선택</option>
+        <option value="dall-e-2">DALL.E 2</option>
+        <option value="dall-e-3">DALL.E 3</option>
+      </select>
+      <br />
+      <select name="size">
+        <option value="">이미지 크기 선택</option>
+        <option value="1024x1024">1024x1024</option>
+      </select>
+      <br />
+      <input
+        type="text"
+        name="prompt"
+        id="prompt"
+        value=""
+        placeholder="프롬프트"
+      />
+      <button type="submit">이미지 생성</button>
+      <div>예시 프롬프트</div>
+      <p>
+        영화 Kill Bill의 가상 레고 박스 세트 영화의 유명한 장면과 중심 캐릭터
+        포함 
+      </p>
+      <p>바르셀로나 FC에서 영감을 받은 네일 아트 디자인</p>
+      <p>ZX Spectrum Game MANIC MINER를 3D 현대적인 스타일의 게임으로 재해석</p>
+      <a
+        href="https://www.instantaiprompt.com/ko/prompts/dall-e/11-best/"
+        target="_blank"
+        >프롬프트 참고링크</a
+      >
+      <br />
+      <br />
+      BinaryData: <%=imageBinaryData%> <br />
+      <img src="<%=imageURL%>" />
+    </form>
+  </body>
+</html>
